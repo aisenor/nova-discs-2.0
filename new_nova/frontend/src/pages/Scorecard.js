@@ -1,5 +1,6 @@
 // frontend/src/pages/home.js
 import React, { useState, useEffect } from 'react';
+import ScorecardTemplate from "./templates/ScorecardTemplate";
 
 const Home = () => {
   const [data, setData] = useState({});
@@ -12,9 +13,7 @@ const Home = () => {
   }, []);
 
   return (
-    <div>
-      <h1>{data.message}</h1>
-    </div>
+    <ScorecardTemplate data={data} />
   );
 };
 

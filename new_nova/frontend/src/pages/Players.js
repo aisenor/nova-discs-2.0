@@ -4,14 +4,14 @@ import React, { useState, useEffect } from 'react';
 import PlayersTemplate from './templates/PlayersTemplate';
 
 const Players = () => {
-  const [data, setData] = useState({});
+  const [data, setData] = useState({players: []});
 
   useEffect(() => {
     fetch('http://localhost:8000/players/')
       .then(response => response.json())
       .then(data => {
-        const parsedPlayers = JSON.parse(data.players);
-        setData({ players: parsedPlayers });
+          console.log(data)
+          setData(data);
       })
       .catch(error => console.error('Error fetching data:', error));
   }, []);

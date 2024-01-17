@@ -22,18 +22,12 @@ const PlayersTemplate = ({ data }) => {
   };
 
   const sortedPlayers = [...data.players].sort((a, b) => {
-    let aValue = a.fields[sortColumn];
-    let bValue = b.fields[sortColumn];
+    let aValue = a[sortColumn];
+    let bValue = b[sortColumn];
 
     // Handle undefined values
     if (aValue === undefined) aValue = '';
     if (bValue === undefined) bValue = '';
-
-    // Convert values to numbers if sorting by ID
-    if (sortColumn === 'pk') {
-        aValue = a.pk
-        bValue = b.pk
-    }
 
     // Use the default comparison for strings and numbers
     if (sortOrder === 'asc') {
@@ -48,8 +42,8 @@ const PlayersTemplate = ({ data }) => {
       <table className="styled-table">
         <thead>
           <tr>
-            <th onClick={() => handleHeaderClick('pk')}>
-              ID {sortColumn === 'pk' && (sortOrder === 'asc' ? <FaArrowUp /> : <FaArrowDown />)}
+            <th onClick={() => handleHeaderClick('id')}>
+              ID {sortColumn === 'id' && (sortOrder === 'asc' ? <FaArrowUp /> : <FaArrowDown />)}
             </th>
             <th onClick={() => handleHeaderClick('name')}>
               Name {sortColumn === 'name' && (sortOrder === 'asc' ? <FaArrowUp /> : <FaArrowDown />)}
@@ -58,9 +52,9 @@ const PlayersTemplate = ({ data }) => {
         </thead>
         <tbody>
           {sortedPlayers.map((player) => (
-            <tr key={player.pk}>
-              <td>{player.pk}</td>
-              <td>{player.fields.name}</td>
+            <tr key={player.id}>
+              <td>{player.id}</td>
+              <td>{player.name}</td>
             </tr>
           ))}
         </tbody>
