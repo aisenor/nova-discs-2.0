@@ -1,4 +1,6 @@
 from rest_framework.generics import ListCreateAPIView
+from rest_framework.response import Response
+from rest_framework import status
 from django.utils.decorators import method_decorator
 from drf_yasg.utils import swagger_auto_schema
 from drf_yasg import openapi
@@ -32,6 +34,13 @@ from backend.models.putting_league import PuttingLeague
                 required=False
             ),
         ]
+    )
+)
+@method_decorator(
+    name="post",
+    decorator=swagger_auto_schema(
+        operation_summary="POST /putting_league/",
+        operation_description=""
     )
 )
 class PuttingLeagueListView(ListCreateAPIView):

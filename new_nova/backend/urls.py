@@ -16,4 +16,5 @@ urlpatterns = [
 
     path("putting_league/", PuttingLeagueListView.as_view(), name="putting_league"),
     path("putting_league/<pk>", PuttingLeagueDetailView.as_view(), name="putting_league"),
+    # path("putting_league/api/submit-form/", form_submit_view, name="form_submit"),
 ]
