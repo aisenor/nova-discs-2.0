@@ -1,4 +1,7 @@
-from django.core.mail.backends import console
+from rest_framework.views import APIView
+from rest_framework.response import Response
+from rest_framework import status
+
 from django.http import JsonResponse
 from django.shortcuts import render
 from django.core.serializers import serialize
@@ -24,3 +27,5 @@ def players(request):
     players_data = serialize('json', Players.objects.all())
     data = {'players': players_data}
     return JsonResponse(data, safe=False)
+
+
