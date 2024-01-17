@@ -21,11 +21,3 @@ def scorecard(request):
 
 def my_page(request):
     return render(request, 'my_page.html')
-
-
-def players(request):
-    players_data = serialize('json', Players.objects.all())
-    data = {'players': players_data}
-    return JsonResponse(data, safe=False)
-
-
