@@ -5,7 +5,7 @@ from api.players.list_view import PlayersListView
 from api.players.detail_view import PlayersDetailView
 from api.putting_league.list_view import PuttingLeagueListView
 from api.putting_league.detail_view import PuttingLeagueDetailView
-
+from api.standings.list_view import StandingsAPIView
 
 urlpatterns = [
     path('', home, name='home'),
@@ -16,5 +16,5 @@ urlpatterns = [
 
     path("putting_league/", PuttingLeagueListView.as_view(), name="putting_league"),
     path("putting_league/<pk>", PuttingLeagueDetailView.as_view(), name="putting_league"),
-    # path("putting_league/api/submit-form/", form_submit_view, name="form_submit"),
+    path('standings/', StandingsAPIView.as_view(), name='standings'),
 ]
