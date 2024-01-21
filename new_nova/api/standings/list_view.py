@@ -4,6 +4,8 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
 
+from backend.models.players import Players
+
 
 class StandingsAPIView(APIView):
     def get(self, request):
@@ -39,7 +41,9 @@ def get_all_scores(data):
 
     for entry in data:
         date = entry.get('date')
-        player = entry.get('player')
+        player_id = entry.get('player')
+        player = Players.objects.get(id=player_id).name
+
         score = entry.get('score')
 
         # Initialize or update the player's data for the specific date

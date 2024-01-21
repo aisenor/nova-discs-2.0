@@ -3,6 +3,7 @@ import { MdSwipeLeft } from "react-icons/md";
 
 import './Scorecard.css'
 
+
 const ScorecardTemplate = () => {
   const [formData, setFormData] = useState({
     date: '',

@@ -1,3 +1,8 @@
+.page {
+    align-items: center;
+    justify-content: center;
+    display: flex;
+}
 
 .styled-table {
     border-collapse: collapse;
@@ -10,7 +15,7 @@
 
 .styled-table thead tr {
     background-color: #467599;
-    color: #ffffff;
+    color: #E9FFF9;
     text-align: left;
     &:hover {
         cursor: pointer;
@@ -27,18 +32,9 @@
 }
 
 .styled-table tbody tr:nth-of-type(even) {
-    background-color: #f3f3f3;
+    background-color: #e7e7e7;
 }
 
 .styled-table tbody tr:last-of-type {
     border-bottom: 2px solid #467599;
-}
-
-.table-container {
-    overflow-x: auto;
-    max-width: 95%;
-    margin: 0 auto;
-    justify-content: center;
-    align-items: center;
-    display: flex;
 }
