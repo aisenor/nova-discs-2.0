@@ -122,7 +122,7 @@ const ScorecardTemplate = () => {
 
         <div className={styles.heading}>
           <h1>Putting League Scorecard</h1>
-          <MdSwipeLeft style={{fontSize: '2em'}}/>
+          <MdSwipeLeft className={styles.swiper}/>
         </div>
 
         <div className={styles.tableContainer}>
@@ -158,8 +158,8 @@ const ScorecardTemplate = () => {
             ))}
             </tbody>
             <tfoot>
-            <tr>
-              <td colSpan={6}>Score: {calculateSum()}</td>
+            <tr className={styles.sticker}>
+              <div className={styles.totalScore} colSpan={6}>Score: {calculateSum()}</div>
             </tr>
             </tfoot>
           </table>
@@ -167,13 +167,13 @@ const ScorecardTemplate = () => {
         {successMessage && <p className={styles.successBanner}>{successMessage}</p>}
 
         <form className={styles.funForm} onSubmit={handleSubmit}>
-           <label>Date: </label>
-           <input
-            type="date"
-            name="date"
-            value={formData.date || getCurrentDate()}
-            onChange={handleChange}
-            required
+          <label>Date: </label>
+          <input
+              type="date"
+              name="date"
+              value={formData.date || getCurrentDate()}
+              onChange={handleChange}
+              required
           />
           {error && <p className={styles.errorBanner}>{error}</p>}
           <label>PDGA #: </label>
@@ -187,8 +187,9 @@ const ScorecardTemplate = () => {
 
           <div className={styles.form}>
             <button className={styles.clearAllButton} type="button" onClick={uncheckAll}>Clear All</button>
-            <button className={`${styles.submitButton} ${submitButtonVisible ? 'enable' : 'disabled'}`} onClick={handleSubmit}>
-                Submit
+            <button className={`${styles.submitButton} ${submitButtonVisible ? 'enable' : 'disabled'}`}
+                    onClick={handleSubmit}>
+              Submit
             </button>
           </div>
 
