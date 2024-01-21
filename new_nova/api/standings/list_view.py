@@ -3,7 +3,6 @@ import requests
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
-from .serializer import StandingsSerializer
 
 
 class StandingsAPIView(APIView):
@@ -13,33 +12,21 @@ class StandingsAPIView(APIView):
             response.raise_for_status()  # Raise an exception for 4xx and 5xx status codes
             data = response.json()
             standings_data = process_data(data)
-
-            serializer = StandingsSerializer(standings_data, many=True)
-            return Response(serializer.data, status=status.HTTP_200_OK)
+            return Response(standings_data, status=status.HTTP_200_OK)
         except requests.exceptions.RequestException as e:
             return Response({"error": f"Failed to fetch data from other endpoint: {e}"}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 
 def process_data(data):
     all_scores = get_all_scores(data)
-    print(all_scores)
 
     players_best_scores = sum_best_3_scores_per_day(all_scores)
-    print(players_best_scores)
 
     top_3_daily = top_3_per_day(players_best_scores)
-    print("top 3 er day")
-    print(top_3_daily)
 
     players_best_4_days = get_players_best_4_days(players_best_scores)
-    print("Best 4 days")
-    print(players_best_4_days)
 
     top_5 = get_top_5_players(players_best_4_days)
-    "top 5 players and their scores"
-    print(top_5)
-
-    print({"top_3_daily": top_3_daily, "top_5": top_5})
 
     return {"top_3_daily": top_3_daily, "top_5": top_5}
 
@@ -87,9 +74,14 @@ def sum_best_3_scores_per_day(all_scores):
 
 
 def top_3_per_day(daily_sums):
+    # Sort the dates in descending order
+    sorted_dates = sorted(daily_sums.keys(), reverse=True)
+
     top_3_sums_per_day = {}
 
-    for date, player_sums in daily_sums.items():
+    for date in sorted_dates:
+        player_sums = daily_sums[date]
+
         # Sort the player sums in descending order
         sorted_sums = sorted(player_sums.items(), key=lambda x: x[1], reverse=True)
 
@@ -120,8 +112,6 @@ def get_players_best_4_days(daily_sums):
 
 
 def get_top_5_players(top_4_days_per_player):
-    print("function")
-    print(top_4_days_per_player)
     cumulative_sums = {}
 
     for player, scores in top_4_days_per_player.items():
