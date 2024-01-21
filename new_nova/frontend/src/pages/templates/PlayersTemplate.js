@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { FaArrowUp, FaArrowDown } from 'react-icons/fa';
 
-import './PlayersTemplate.module.css';
+import styles from './PlayersTemplate.module.css';
 
 const PlayersTemplate = ({ data }) => {
 
@@ -38,8 +38,8 @@ const PlayersTemplate = ({ data }) => {
   });
 
   return (
-    <div className="page">
-      <table className="styled-table">
+    <div className={styles.page}>
+      <table className={styles.styledTable}>
         <thead>
           <tr>
             <th onClick={() => handleHeaderClick('id')}>
