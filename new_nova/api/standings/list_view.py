@@ -21,69 +21,115 @@ class StandingsAPIView(APIView):
 
 
 def process_data(data):
-    """
-    Data is a list of dicts, each dict containing the following
-        id
-        date
-        player (PDGA ID)
-        score
-    EX: [{'id': 1, 'date': '2024-01-11', 'player': 169559, 'score': 59}, ...]
+    all_scores = get_all_scores(data)
+    print(all_scores)
 
-    The goal of this is to sum every player's best 3 scores for every date there is
-    entries and return the top 3 players for each day
+    players_best_scores = sum_best_3_scores_per_day(all_scores)
+    print(players_best_scores)
 
-    return dict with keys that are dates and values are the top 3 players
-    Ex: {"2024-01-01": {"player_name": "score", ...}, ...}
+    top_3_daily = top_3_per_day(players_best_scores)
+    print("top 3 er day")
+    print(top_3_daily)
+
+    players_best_4_days = get_players_best_4_days(players_best_scores)
+    print("Best 4 days")
+    print(players_best_4_days)
+
+    top_5 = get_top_5_players(players_best_4_days)
+    "top 5 players and their scores"
+    print(top_5)
+
+    print({"top_3_daily": top_3_daily, "top_5": top_5})
+
+    return {"top_3_daily": top_3_daily, "top_5": top_5}
+
+
+def get_all_scores(data):
     """
-    processed_data = {}
+    Get all scores
+    """
+    all_scores = {}
+
     for entry in data:
         date = entry.get('date')
         player = entry.get('player')
-        print(player)
         score = entry.get('score')
 
         # Initialize or update the player's data for the specific date
-        if date not in processed_data:
-            processed_data[date] = {}
+        if date not in all_scores:
+            all_scores[date] = {}
 
-        if player not in processed_data[date]:
-            processed_data[date][player] = []
+        if player not in all_scores[date]:
+            all_scores[date][player] = []
 
         # Add the score to the player's total for that date
-        processed_data[date][player].append(score)
+        all_scores[date][player].append(score)
 
-    # Create a list to store the intermediate result
-    intermediate_result = []
+    return all_scores
 
-    # Iterate over each date in the processed data
-    for date, players in processed_data.items():
-        # Iterate over each player on that date
-        for player, scores in players.items():
+
+def sum_best_3_scores_per_day(all_scores):
+    daily_sums = {}
+
+    for date, player_scores in all_scores.items():
+        for player, scores in player_scores.items():
             # Sort the player's scores in descending order
             sorted_scores = sorted(scores, reverse=True)
 
-            # Take the top 3 scores
-            top_3_scores = sorted_scores[:3]
+            # Take the best 3 scores
+            best_3_scores = sorted_scores[:3]
 
-            # Sum the top 3 scores for each player
-            total_score = sum(top_3_scores)
+            # Sum the best 3 scores for each player on each day
+            daily_sums.setdefault(date, {}).setdefault(player, 0)
+            daily_sums[date][player] += sum(best_3_scores)
 
-            # Append the date, player, and total score to the intermediate result list
-            intermediate_result.append({
-                'date': date,
-                'player': player,
-                'total_score': total_score
-            })
-
-    # Sort the intermediate result by total score in descending order
-    sorted_result = sorted(intermediate_result, key=lambda x: x['total_score'], reverse=True)
-
-    # Take the top 3 players based on total score
-    final_result = sorted_result[:3]
-
-    print("final result")
-    print(final_result)
-
-    return final_result
+    return daily_sums
 
 
+def top_3_per_day(daily_sums):
+    top_3_sums_per_day = {}
+
+    for date, player_sums in daily_sums.items():
+        # Sort the player sums in descending order
+        sorted_sums = sorted(player_sums.items(), key=lambda x: x[1], reverse=True)
+
+        # Take the top 3 sums
+        top_3_sums = sorted_sums[:3]
+
+        # Store the top 3 sums for each day
+        top_3_sums_per_day[date] = top_3_sums
+
+    return top_3_sums_per_day
+
+
+def get_players_best_4_days(daily_sums):
+    players_scores_all = {}
+
+    for date, scores in daily_sums.items():
+        for player, score in scores.items():
+            if player not in players_scores_all:
+                players_scores_all[player] = []
+            players_scores_all[player].append(score)
+
+    players_best_4_scores = {}
+    for player, scores in players_scores_all.items():
+        sorted_scores = sorted(scores, reverse=True)
+        players_best_4_scores[player] = sorted_scores[:4]
+
+    return players_best_4_scores
+
+
+def get_top_5_players(top_4_days_per_player):
+    print("function")
+    print(top_4_days_per_player)
+    cumulative_sums = {}
+
+    for player, scores in top_4_days_per_player.items():
+        # Calculate the cumulative sum of the best 4 days for each player
+        cumulative_sum = sum(score for score in scores)
+        cumulative_sums[player] = cumulative_sum
+
+    # Take the top 5 players based on the cumulative sums
+    top_5_players = sorted(cumulative_sums.items(), key=lambda x: x[1], reverse=True)[:5]
+
+    return top_5_players
