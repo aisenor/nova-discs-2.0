@@ -3,7 +3,6 @@ import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import Home from './pages/Home';
 import Standings from './pages/Standings';
 import Scorecard from './pages/Scorecard';
-import MyPage from './pages/MyPage';
 import Players from './pages/Players';
 import Navbar from './components/Navbar';
 
@@ -25,7 +24,6 @@ function App() {
         <Route path="/" element={<Home data={data} />} />
         <Route path="/standings" element={<Standings data={data} />} />
         <Route path="/scorecard" element={<Scorecard data={data} />} />
-        <Route path="/my_page" element={<MyPage data={data} />} />
         <Route path="/players" element={<Players data={data} />} />
       </Routes>
     </Router>

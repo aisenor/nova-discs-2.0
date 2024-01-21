@@ -1,13 +1,14 @@
 import React, { useState, useEffect } from 'react';
 
-import './generic.css'
+import styles from './StandingsTemplate.module.css';
+
 
 const StandingsTemplate = ({ data }) => {
 
   const renderDayTable = (date, playerScores) => (
-    <div className='page' key={date}>
+    <div key={date}>
       <h2>{date}</h2>
-      <table className="styled-table">
+      <table className={styles.styledTable}>
         <thead>
           <tr>
             <th>Player</th>
@@ -28,8 +29,8 @@ const StandingsTemplate = ({ data }) => {
 
   const renderTop5Table = (top5Players) => (
     <div>
-      <h2 className='page'>Top 5 Players</h2>
-      <table className="styled-table">
+      <h2>Top 5 Players</h2>
+      <table className={styles.styledTable}>
         <thead>
           <tr>
             <th>Player</th>
@@ -49,9 +50,9 @@ const StandingsTemplate = ({ data }) => {
   );
 
   return (
-    <div>
+    <div className={styles.page}>
       {data && data.top_3_daily && data.top_5 ? (
-        <div className='page'>
+        <div className={styles.standings}>
           {renderTop5Table(data.top_5)}
 
           {Object.entries(data.top_3_daily).map(([date, playerScores]) =>

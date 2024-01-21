@@ -1,4 +1,27 @@
-.error-banner {
+.page {
+    align-items: center;
+    justify-content: center;
+    display: flex;
+    flex-direction: column;
+    padding: 0 10px;
+    .tableContainer {
+        overflow-x: auto;
+        max-width: 95%;
+        margin: 0 auto;
+        justify-content: flex-start;
+        align-items: flex-start;
+        display: flex;
+    }
+    .heading {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-direction: column;
+        text-align: center;
+    }
+}
+
+.errorBanner {
     background-color: #ffcccc;
     color: #D64045;
     padding: 10px;
@@ -7,7 +30,7 @@
     text-align: center;
 }
 
-.success-banner {
+.successBanner {
     position: fixed;
     bottom: 30px;
     width: 100%;
@@ -21,26 +44,19 @@
     opacity: 1;
 }
 
-.checkbox-label {
+.checkboxLabel {
   display: block;
   width: 30px; /* Adjust the width to your preference */
   height: 30px; /* Adjust the height to your preference */
 }
 
-.checkbox-label input {
+.checkboxLabel input {
   width: 80%;
   height: 80%;
 }
 
-.page {
-    align-items: center;
-    justify-content: center;
-    display: flex;
-    flex-direction: column;
-}
-
-.clear-all-button,
-.submit-button {
+.clearAllButton,
+.submitButton {
     margin: 5px;
     padding: 10px 20px;
     border: none;
@@ -50,7 +66,7 @@
     transition: background-color 0.3s ease, color 0.3s ease;
 }
 
-.clear-all-button {
+.clearAllButton {
   background-color: #ffcccb; /* Light pink background */
   color: #ff6666; /* Dark pink text color */
 
@@ -61,7 +77,7 @@
   }
 }
 
-.submit-button {
+.submitButton {
     background-color: #9ED8DB; /* Light pink background */
     color: #467599; /* Dark pink text color */
     opacity: 1;
@@ -75,7 +91,7 @@
   }
 }
 
-.submit-button.disabled {
+.submitButton.disabled {
   pointer-events: none;
 }
 
@@ -86,7 +102,7 @@
     display: flex;
 }
 
-.fun-form {
+.funForm {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -95,12 +111,12 @@
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
-.fun-form label {
+.funForm label {
   margin-bottom: 8px;
   font-size: 18px;
 }
 
-.fun-form input {
+.funForm input {
   padding: 10px;
   margin-bottom: 16px;
   border-radius: 5px;
@@ -108,8 +124,43 @@
   font-size: 16px;
 }
 
-.fun-form-buttons {
+.funFormButtons {
   display: flex;
   justify-content: space-between;
   width: 100%;
+}
+
+.styledTable {
+    border-collapse: collapse;
+    margin: 25px 0;
+    font-size: 0.9em;
+    font-family: sans-serif;
+    width: 100%;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
+}
+
+.styledTable thead tr {
+    background-color: #467599;
+    color: #ffffff;
+    text-align: left;
+    &:hover {
+        cursor: pointer;
+    }
+}
+
+.styledTable th,
+.styledTable td {
+    padding: 12px 15px;
+}
+
+.styledTable tbody tr {
+    border-bottom: 1px solid #dddddd;
+}
+
+.styledTable-table tbody tr:nth-of-type(even) {
+    background-color: #f3f3f3;
+}
+
+.styledTable tbody tr:last-of-type {
+    border-bottom: 2px solid #467599;
 }

@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { MdSwipeLeft } from "react-icons/md";
 
-import './Scorecard.css'
+import styles from './Scorecard.module.css'
 
 
 const ScorecardTemplate = () => {
@@ -109,8 +109,8 @@ const ScorecardTemplate = () => {
   };
 
   return (
-      <div>
-        <div className="page">
+      <div className={styles.page}>
+        <div>
           <p>Basket setup order Standard <br/>
             Basket 20' 1pt <br/>
             Standard Basket 25' 2pt <br/>
@@ -120,14 +120,14 @@ const ScorecardTemplate = () => {
           </p>
         </div>
 
-        <div className="page">
+        <div className={styles.heading}>
           <h1>Putting League Scorecard</h1>
           <MdSwipeLeft style={{fontSize: '2em'}}/>
         </div>
 
-        <div className="page table-container">
+        <div className={styles.tableContainer}>
 
-          <table className="styled-table">
+          <table className={styles.styledTable}>
             <thead>
             <tr>
               <th></th>
@@ -144,7 +144,7 @@ const ScorecardTemplate = () => {
                     const index = rowIndex * 5 + colIndex;
                     return (
                         <td key={colIndex}>
-                          <label className="checkbox-label">
+                          <label className={styles.checkboxLabel}>
                             <input
                                 type="checkbox"
                                 checked={checkedBoxes[index]}
@@ -164,9 +164,9 @@ const ScorecardTemplate = () => {
             </tfoot>
           </table>
         </div>
-        {successMessage && <p className="success-banner">{successMessage}</p>}
+        {successMessage && <p className={styles.successBanner}>{successMessage}</p>}
 
-        <form className="fun-form" onSubmit={handleSubmit}>
+        <form className={styles.funForm} onSubmit={handleSubmit}>
            <label>Date: </label>
            <input
             type="date"
@@ -175,7 +175,7 @@ const ScorecardTemplate = () => {
             onChange={handleChange}
             required
           />
-          {error && <p className="error-banner">{error}</p>}
+          {error && <p className={styles.errorBanner}>{error}</p>}
           <label>PDGA #: </label>
           <input
               type="text"
@@ -185,10 +185,10 @@ const ScorecardTemplate = () => {
               required
           />
 
-          <div className="form">
-            <button className="clear-all-button" type="button" onClick={uncheckAll}>Clear All</button>
-            <button className={`submit-button ${submitButtonVisible ? 'enable' : 'disabled'}`} onClick={handleSubmit}>
-              Submit
+          <div className={styles.form}>
+            <button className={styles.clearAllButton} type="button" onClick={uncheckAll}>Clear All</button>
+            <button className={`${styles.submitButton} ${submitButtonVisible ? 'enable' : 'disabled'}`} onClick={handleSubmit}>
+                Submit
             </button>
           </div>
 

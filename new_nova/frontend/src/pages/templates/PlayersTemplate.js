@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { FaArrowUp, FaArrowDown } from 'react-icons/fa';
 
-import './generic.css';
+import './PlayersTemplate.module.css';
 
 const PlayersTemplate = ({ data }) => {
 
