@@ -1,13 +1,26 @@
-// frontend/src/Home.js
-import React from 'react';
+// frontend/src/pages/home.js
+import React, { useState, useEffect } from 'react';
 
-const Standings = () => {
+import StandingsTemplate from './templates/StandingsTemplate';
+
+const Home = () => {
+  const [data, setData] = useState({});
+
+  useEffect(() => {
+    fetch('http://localhost:8000/standings/')
+      .then(response => response.json())
+      .then(data => setData(data))
+      .catch(error => console.error('Error fetching data:', error));
+    console.log(data)
+  }, []);
+
   return (
-    <div>
-      <h1>FUTURE Nova Discs Putting League Standings page</h1>
-      <p>I'll put a table here or something.</p>
-    </div>
+      <StandingsTemplate data={data} />
+
+    // <div>
+    //   <pre>{JSON.stringify(data, null, 2)}</pre>
+    // </div>
   );
 };
 
-export default Standings;
+export default Home;

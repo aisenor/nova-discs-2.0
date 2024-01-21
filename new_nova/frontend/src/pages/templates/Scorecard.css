@@ -7,10 +7,36 @@
     text-align: center;
 }
 
+.success-banner {
+    position: fixed;
+    bottom: 30px;
+    width: 100%;
+    background-color: #9ED8DB;
+    color: #1D3354;
+    padding: 10px;
+    border: 1px solid #1D3354;
+    margin-bottom: 10px;
+    text-align: center;
+    transition: opacity 0.5s ease-in-out;
+    opacity: 1;
+}
+
+.checkbox-label {
+  display: block;
+  width: 30px; /* Adjust the width to your preference */
+  height: 30px; /* Adjust the height to your preference */
+}
+
+.checkbox-label input {
+  width: 80%;
+  height: 80%;
+}
+
 .page {
     align-items: center;
     justify-content: center;
     display: flex;
+    flex-direction: column;
 }
 
 .styled-table {
@@ -23,7 +49,7 @@
 }
 
 .styled-table thead tr {
-    background-color: #7BD389;
+    background-color: #467599;
     color: #ffffff;
     text-align: left;
     &:hover {
@@ -45,5 +71,90 @@
 }
 
 .styled-table tbody tr:last-of-type {
-    border-bottom: 2px solid #7BD389;
+    border-bottom: 2px solid #467599;
+}
+
+.table-container {
+    overflow-x: auto;
+    max-width: 95%;
+    margin: 0 auto;
+    justify-content: center;
+    align-items: center;
+    display: flex;
+}
+
+
+.clear-all-button,
+.submit-button {
+    margin: 5px;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.clear-all-button {
+  background-color: #ffcccb; /* Light pink background */
+  color: #ff6666; /* Dark pink text color */
+
+  /* Optional: Add hover styles for a fun effect */
+  &:hover {
+    background-color: #D64045; /* Lighter pink on hover */
+    color: #ffffff; /* White text color on hover */
+  }
+}
+
+.submit-button {
+    background-color: #9ED8DB; /* Light pink background */
+    color: #467599; /* Dark pink text color */
+    opacity: 1;
+    transition: opacity 0.5s ease-in-out;
+
+
+  /* Optional: Add hover styles for a fun effect */
+  &:hover {
+    background-color: #467599; /* Lighter pink on hover */
+    color: #E9FFF9; /* White text color on hover */
+  }
+}
+
+.submit-button.disabled {
+  pointer-events: none;
+}
+
+.form {
+    padding: 20px;
+    align-items: center;
+    justify-content: center;
+    display: flex;
+}
+
+.fun-form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.fun-form label {
+  margin-bottom: 8px;
+  font-size: 18px;
+}
+
+.fun-form input {
+  padding: 10px;
+  margin-bottom: 16px;
+  border-radius: 5px;
+  border: 1px solid #ddd;
+  font-size: 16px;
+}
+
+.fun-form-buttons {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
 }
