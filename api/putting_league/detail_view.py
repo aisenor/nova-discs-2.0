@@ -13,6 +13,6 @@ from backend.models.putting_league import PuttingLeague
     )
 )
 class PuttingLeagueDetailView(RetrieveUpdateDestroyAPIView):
-    http_method_names = ["get", "post"]
+    http_method_names = ["get", "put", "delete"]
     serializer_class = PuttingLeagueSerializer
     queryset = PuttingLeague.objects.all()
