@@ -1,4 +1,5 @@
 from django.urls import path
+from django.contrib import admin
 from api.views import home
 
 from api.players.list_view import PlayersListView
@@ -9,6 +10,7 @@ from api.standings.list_view import StandingsAPIView
 
 urlpatterns = [
     path('', home, name='home'),
+    path('admin/', admin.site.urls),
     path("players/", PlayersListView.as_view(), name="players"),
     path("players/<pk>", PlayersDetailView.as_view(), name="players"),
 
