@@ -1,5 +1,5 @@
 from django.urls import path
-from .views import home
+from api.views import home
 
 from api.players.list_view import PlayersListView
 from api.players.detail_view import PlayersDetailView

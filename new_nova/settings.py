@@ -58,7 +58,7 @@ MIDDLEWARE = [
     'whitenoise.middleware.WhiteNoiseMiddleware'
 ]
 
-ROOT_URLCONF = 'backend.urls'
+ROOT_URLCONF = 'new_nova.urls'
 
 # Static files (CSS, JavaScript, images)
 STATIC_URL = '/static/'
@@ -82,7 +82,7 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = 'backend.wsgi.application'
+WSGI_APPLICATION = 'new_nova.wsgi.application'
 
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:3000",  # React development server
@@ -90,7 +90,14 @@ CORS_ALLOWED_ORIGINS = [
 ]
 
 DATABASES = {
-    'default': dj_database_url.config(default=os.environ.get('DATABASE_URL'))
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'db84t9c5vlfhks',
+        'USER': 'hrcspgucoaaufd',
+        'PASSWORD': 'f7955cb89479046157d35e42684c37e0fe75b141da14fd2fc653e65509eb9274',
+        'HOST': 'ec2-3-232-218-211.compute-1.amazonaws.com',
+        'PORT': '5432',
+    }
 }
 
 
