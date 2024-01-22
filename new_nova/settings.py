@@ -10,6 +10,7 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.0/ref/settings/
 """
 import os
+import secrets
 from pathlib import Path
 import dj_database_url
 import django_heroku
@@ -22,12 +23,22 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/5.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-xf8$jfcv(pp25u0$%k)sisg2+2dh$*urd7w_p_ekch5y(@3#xs'
+SECRET_KEY = os.environ.get(
+    "django-insecure-xf8$jfcv(pp25u0$%k)sisg2+2dh$*urd7w_p_ekch5y(@3#xs",
+    default=secrets.token_urlsafe(nbytes=64),
+)
+
+IS_HEROKU_APP = "DYNO" in os.environ and not "CI" in os.environ
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+if not IS_HEROKU_APP:
+    DEBUG = True
 
-ALLOWED_HOSTS = ['localhost', '127.0.0.1']
+
+if IS_HEROKU_APP:
+    ALLOWED_HOSTS = ["*"]
+else:
+    ALLOWED_HOSTS = ['localhost', '127.0.0.1']
 
 
 # Application definition
@@ -62,6 +73,7 @@ ROOT_URLCONF = 'new_nova.urls'
 
 # Static files (CSS, JavaScript, images)
 STATIC_URL = '/static/'
+STATIC_ROOT = BASE_DIR / "staticfiles"
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'frontend', 'build', 'static'),
 ]
@@ -89,16 +101,39 @@ CORS_ALLOWED_ORIGINS = [
     "https://localhost:3000",  # React development server
 ]
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'db84t9c5vlfhks',
-        'USER': 'hrcspgucoaaufd',
-        'PASSWORD': 'f7955cb89479046157d35e42684c37e0fe75b141da14fd2fc653e65509eb9274',
-        'HOST': 'ec2-3-232-218-211.compute-1.amazonaws.com',
-        'PORT': '5432',
+
+if IS_HEROKU_APP:
+    # In production on Heroku the database configuration is derived from the `DATABASE_URL`
+    # environment variable by the dj-database-url package. `DATABASE_URL` will be set
+    # automatically by Heroku when a database addon is attached to your Heroku app. See:
+    # https://devcenter.heroku.com/articles/provisioning-heroku-postgres
+    # https://github.com/jazzband/dj-database-url
+    DATABASES = {
+        "default": dj_database_url.config(
+            conn_max_age=600,
+            conn_health_checks=True,
+            ssl_require=True,
+        ),
     }
-}
+else:
+    # When running locally in development or in CI, a sqlite database file will be used instead
+    # to simplify initial setup. Longer term it's recommended to use Postgres locally too.
+    DATABASES = {
+        "default": {
+            "ENGINE": "django.db.backends.sqlite3",
+            "NAME": BASE_DIR / "db.sqlite3",
+        }
+    }
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.postgresql',
+#         'NAME': 'db84t9c5vlfhks',
+#         'USER': 'hrcspgucoaaufd',
+#         'PASSWORD': 'f7955cb89479046157d35e42684c37e0fe75b141da14fd2fc653e65509eb9274',
+#         'HOST': 'ec2-3-232-218-211.compute-1.amazonaws.com',
+#         'PORT': '5432',
+#     }
+# }
 
 
 # Password validation
@@ -137,3 +172,12 @@ USE_TZ = True
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 django_heroku.settings(locals())
+
+STORAGES = {
+    # Enable WhiteNoise's GZip and Brotli compression of static assets:
+    # https://whitenoise.readthedocs.io/en/latest/django.html#add-compression-and-caching-support
+    "staticfiles": {
+        "BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage",
+    },
+}
+WHITENOISE_KEEP_ONLY_HASHED_FILES = True
