@@ -66,7 +66,9 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'corsheaders.middleware.CorsMiddleware',
-    'whitenoise.middleware.WhiteNoiseMiddleware'
+    'whitenoise.middleware.WhiteNoiseMiddleware',
+    "whitenoise.runserver_nostatic",
+    'django.contrib.staticfiles',
 ]
 
 ROOT_URLCONF = 'new_nova.urls'
