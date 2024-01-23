@@ -102,6 +102,8 @@ WSGI_APPLICATION = 'new_nova.wsgi.application'
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:3000",  # React development server
     "https://localhost:3000",  # React development server
+    "http://nova-discs-halifax.web.app",
+    "https://nova-discs-halifax.web.app",
 ]
 
 
