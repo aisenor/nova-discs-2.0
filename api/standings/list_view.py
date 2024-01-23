@@ -10,7 +10,7 @@ from backend.models.players import Players
 class StandingsAPIView(APIView):
     def get(self, request):
         try:
-            response = requests.get('http://localhost:8000/putting_league/')
+            response = requests.get('https://nova-discs-fcf0d9c53d93.herokuapp.com/putting_league/')
             response.raise_for_status()  # Raise an exception for 4xx and 5xx status codes
             data = response.json()
             standings_data = process_data(data)
