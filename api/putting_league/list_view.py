@@ -46,9 +46,9 @@ class PuttingLeagueListView(ListCreateAPIView):
     queryset = PuttingLeague.objects.all()
     filterset_class = PuttingLeagueFilter
 
-    # def get_queryset(self):
-    #     player_id = self.request.query_params.get('player')
-    #     if player_id:
-    #         return PuttingLeague.objects.filter(player_id=player_id).order_by('-date')
-    #     else:
-    #         return PuttingLeague.objects.all().order_by('-date')
+    def get_queryset(self):
+        player_id = self.request.query_params.get('player')
+        if player_id:
+            return PuttingLeague.objects.filter(player_id=player_id).order_by('-date')
+        else:
+            return PuttingLeague.objects.all().order_by('-date')
