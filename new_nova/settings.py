@@ -18,15 +18,25 @@ import django_heroku
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = os.environ.get(
-    "django-insecure-xf8$jfcv(pp25u0$%k)sisg2+2dh$*urd7w_p_ekch5y(@3#xs",
-    default=secrets.token_urlsafe(nbytes=64),
-)
+SECRET_KEY = "django-insecure-xf8$jfcv(pp25u0$%k)sisg2+2dh$*urd7w_p_ekch5y(@3#xs",
+
+# Determine the environment from the DJANGO_ENV environment variable
+env = os.environ.get('DJANGO_ENV', 'dev')
+
+# Import the appropriate configuration based on the environment
+if env == 'dev':
+    from new_nova.config_dev import Config
+elif env == 'prod':
+    from new_nova.config_prod import Config
+else:
+    raise ValueError(f"Unknown environment: {env}, acceptable inputs are 'dev' and 'prod'")
+
+API_URL = Config.API_URL
+
 
 IS_HEROKU_APP = "DYNO" in os.environ and not "CI" in os.environ
 
@@ -34,11 +44,18 @@ IS_HEROKU_APP = "DYNO" in os.environ and not "CI" in os.environ
 if not IS_HEROKU_APP:
     DEBUG = True
 
-
 if IS_HEROKU_APP:
     ALLOWED_HOSTS = ["*"]
+    CORS_ALLOWED_ORIGINS = [
+        "http://nova-discs-halifax.web.app",
+        "https://nova-discs-halifax.web.app",
+    ]
 else:
-    ALLOWED_HOSTS = ['localhost', '127.0.0.1']
+    ALLOWED_HOSTS = ['localhost', '127.0.0.1', "*"]
+    CORS_ALLOWED_ORIGINS = [
+        "http://localhost:3000",
+        "https://localhost:3000",
+    ]
 
 
 # Application definition
@@ -99,47 +116,37 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'new_nova.wsgi.application'
 
-CORS_ALLOWED_ORIGINS = [
-    "http://localhost:3000",  # React development server
-    "https://localhost:3000",  # React development server
-    "http://nova-discs-halifax.web.app",
-    "https://nova-discs-halifax.web.app",
-]
 
-
-# if IS_HEROKU_APP:
-#     # In production on Heroku the database configuration is derived from the `DATABASE_URL`
-#     # environment variable by the dj-database-url package. `DATABASE_URL` will be set
-#     # automatically by Heroku when a database addon is attached to your Heroku app. See:
-#     # https://devcenter.heroku.com/articles/provisioning-heroku-postgres
-#     # https://github.com/jazzband/dj-database-url
-#     DATABASES = {
-#         "default": dj_database_url.config(
-#             conn_max_age=600,
-#             conn_health_checks=True,
-#             ssl_require=True,
-#         ),
-#     }
-# else:
-#     # When running locally in development or in CI, a sqlite database file will be used instead
-#     # to simplify initial setup. Longer term it's recommended to use Postgres locally too.
-#     DATABASES = {
-#         "default": {
-#             "ENGINE": "django.db.backends.sqlite3",
-#             "NAME": BASE_DIR / "db.sqlite3",
-#         }
-#     }
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'db84t9c5vlfhks',
-        'USER': 'hrcspgucoaaufd',
-        'PASSWORD': 'f7955cb89479046157d35e42684c37e0fe75b141da14fd2fc653e65509eb9274',
-        'HOST': 'ec2-3-232-218-211.compute-1.amazonaws.com',
-        'PORT': '5432',
+if IS_HEROKU_APP:
+    # In production on Heroku the database configuration is derived from the `DATABASE_URL`
+    # environment variable by the dj-database-url package. `DATABASE_URL` will be set
+    # automatically by Heroku when a database addon is attached to your Heroku app. See:
+    # https://devcenter.heroku.com/articles/provisioning-heroku-postgres
+    # https://github.com/jazzband/dj-database-url
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.postgresql',
+            'NAME': 'db84t9c5vlfhks',
+            'USER': 'hrcspgucoaaufd',
+            'PASSWORD': 'f7955cb89479046157d35e42684c37e0fe75b141da14fd2fc653e65509eb9274',
+            'HOST': 'ec2-3-232-218-211.compute-1.amazonaws.com',
+            'PORT': '5432',
+        }
     }
-}
-
+# DATABASES = {
+#     "default": dj_database_url.config(
+#         conn_max_age=600,
+#         conn_health_checks=True,
+#         ssl_require=True,
+#     ),
+# }
+else:
+    DATABASES = {
+        "default": {
+            "ENGINE": "django.db.backends.sqlite3",
+            "NAME": BASE_DIR / "new_nova/db.sqlite3",
+        }
+    }
 
 # Password validation
 # https://docs.djangoproject.com/en/5.0/ref/settings/#auth-password-validators

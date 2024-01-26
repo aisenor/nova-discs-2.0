@@ -4,7 +4,7 @@ from .players import Players
 
 
 class PuttingLeague(models.Model):
-    date = models.CharField(max_length=255)
+    date = models.DateField()
     player = models.ForeignKey(Players, models.DO_NOTHING)
     score = models.IntegerField()
 

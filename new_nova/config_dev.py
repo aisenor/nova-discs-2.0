@@ -3,8 +3,7 @@ import os
 
 class Config:
     DEBUG = True
-    SQLALCHEMY_DATABASE_URI = 'sqlite:///dev.db'
-    SQLALCHEMY_TRACK_MODIFICATIONS = False
+    DATABASE_URL = 'sqlite:///dev.db'
     API_URL = 'https://localhost:8000'
 
 

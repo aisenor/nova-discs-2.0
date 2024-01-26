@@ -3,6 +3,7 @@ import requests
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
+from django.conf import settings
 
 from backend.models.players import Players
 
@@ -10,7 +11,7 @@ from backend.models.players import Players
 class StandingsAPIView(APIView):
     def get(self, request):
         try:
-            response = requests.get('https://nova-discs-fcf0d9c53d93.herokuapp.com/putting_league/')
+            response = requests.get(f'{settings.API_URL}/putting_league/')
             response.raise_for_status()  # Raise an exception for 4xx and 5xx status codes
             data = response.json()
             standings_data = process_data(data)

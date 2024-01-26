@@ -16,5 +16,6 @@ urlpatterns = [
 
     path("putting_league/", PuttingLeagueListView.as_view(), name="putting_league"),
     path("putting_league/<pk>", PuttingLeagueDetailView.as_view(), name="putting_league"),
+    path("putting_league/<int:player_id>", PuttingLeagueListView.as_view(), name="putting_league"),
     path('standings/', StandingsAPIView.as_view(), name='standings'),
 ]
