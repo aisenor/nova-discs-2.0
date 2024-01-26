@@ -10,6 +10,7 @@ from api.standings.list_view import StandingsAPIView
 
 urlpatterns = [
     path('', home, name='home'),
+    path('/', home, name='home'),
     path('admin/', admin.site.urls),
     path("players/", PlayersListView.as_view(), name="players"),
     path("players/<pk>", PlayersDetailView.as_view(), name="players"),
