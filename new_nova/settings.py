@@ -27,17 +27,6 @@ SECRET_KEY = "django-insecure-xf8$jfcv(pp25u0$%k)sisg2+2dh$*urd7w_p_ekch5y(@3#xs
 # Determine the environment from the DJANGO_ENV environment variable
 env = os.environ.get('DJANGO_ENV', 'dev')
 
-# Import the appropriate configuration based on the environment
-if env == 'dev':
-    from new_nova.config_dev import Config
-elif env == 'prod':
-    from new_nova.config_prod import Config
-else:
-    raise ValueError(f"Unknown environment: {env}, acceptable inputs are 'dev' and 'prod'")
-
-API_URL = Config.API_URL
-
-
 IS_HEROKU_APP = "DYNO" in os.environ and not "CI" in os.environ
 
 # SECURITY WARNING: don't run with debug turned on in production!
@@ -45,17 +34,21 @@ if not IS_HEROKU_APP:
     DEBUG = True
 
 if IS_HEROKU_APP:
+    from new_nova.config_prod import Config
     ALLOWED_HOSTS = ["*"]
     CORS_ALLOWED_ORIGINS = [
         "http://nova-discs-halifax.web.app",
         "https://nova-discs-halifax.web.app",
     ]
 else:
+    from new_nova.config_dev import Config
     ALLOWED_HOSTS = ['localhost', '127.0.0.1', "*"]
     CORS_ALLOWED_ORIGINS = [
         "http://localhost:3000",
         "https://localhost:3000",
     ]
+
+API_URL = Config.API_URL
 
 
 # Application definition
