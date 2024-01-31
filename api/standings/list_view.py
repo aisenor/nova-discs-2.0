@@ -23,6 +23,8 @@ class StandingsAPIView(APIView):
 def process_data(data):
     all_scores = get_all_scores(data)
 
+    hot_rounds = hot_round_calc(all_scores)
+
     players_best_scores = sum_best_3_scores_per_day(all_scores)
 
     top_3_daily = top_3_per_day(players_best_scores)
@@ -31,7 +33,7 @@ def process_data(data):
 
     top_5 = get_top_5_players(players_best_4_days)
 
-    return {"top_3_daily": top_3_daily, "top_5": top_5}
+    return {"top_3_daily": top_3_daily, "top_5": top_5, "hot_round": hot_rounds}
 
 
 def get_all_scores(data):
@@ -58,6 +60,23 @@ def get_all_scores(data):
         all_scores[date][player].append(score)
 
     return all_scores
+
+
+def hot_round_calc(all_scores):
+    hot_rounds = {}
+    for date, player_scores in all_scores.items():
+        best_score = float('-inf')
+        best_player = None
+
+        for player, scores in player_scores.items():
+            max_score = max(scores)
+            if max_score > best_score:
+                best_score = max_score
+                best_player = player
+
+        hot_rounds[date] = {best_player: best_score}
+
+    return hot_rounds
 
 
 def sum_best_3_scores_per_day(all_scores):
