@@ -2,6 +2,9 @@ from rest_framework.generics import ListCreateAPIView
 from django.utils.decorators import method_decorator
 from drf_yasg.utils import swagger_auto_schema
 from drf_yasg import openapi
+from django.db.models import Q
+
+from datetime import datetime, timedelta
 
 from .serializer import PuttingLeagueSerializer
 from .filter import PuttingLeagueFilter
@@ -48,7 +51,18 @@ class PuttingLeagueListView(ListCreateAPIView):
 
     def get_queryset(self):
         player_id = self.request.query_params.get('player')
+        date = self.request.query_params.get('date')
         if player_id:
-            return PuttingLeague.objects.filter(player_id=player_id).order_by('-date')
+            queryset = PuttingLeague.objects.filter(player_id=player_id)
         else:
-            return PuttingLeague.objects.all().order_by('-date')
+            queryset = PuttingLeague.objects.all()
+
+        if date:
+            # Assuming date is in the format 'YYYY-MM-DD'
+            date_obj = datetime.strptime(date, '%Y-%m-%d')
+            # Filter scores by date range, considering only one day
+            queryset = queryset.filter(
+                Q(date__gte=date_obj) & Q(date__lt=date_obj + timedelta(days=1))
+            )
+
+        return queryset.order_by('-date')
